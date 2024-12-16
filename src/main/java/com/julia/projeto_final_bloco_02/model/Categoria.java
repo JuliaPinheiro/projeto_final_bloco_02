@@ -1,8 +1,8 @@
 package com.julia.projeto_final_bloco_02.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_categorias")
@@ -12,13 +12,11 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "A descrição é obrigatória!")
-    @Size(min = 3, max = 100, message = "A descrição deve ter entre 3 e 100 caracteres")
     private String descricao;
 
-
-   // @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
-  //  private List<Produto> produtos;
+    @JsonIgnoreProperties({"categoria"})
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Produto> produtos;
 
     public Long getId() {
         return id;
@@ -36,11 +34,11 @@ public class Categoria {
         this.descricao = descricao;
     }
 
- /*   public List<Produto> getProdutos() {
+    public List<Produto> getProdutos() {
         return produtos;
     }
 
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
-    }*/
+    }
 }
